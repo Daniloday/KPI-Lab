@@ -12,7 +12,10 @@ arrAckley = {"f": Ackley.f, "dfdx": Ackley.dfdx, "dfdy": Ackley.dfdy}
 
 arrFunc = {"Ackley": arrAckley}
 
-def optimization(func, x, y, eps):
+def optimization(func, x, y, eps, step, coef):
+    # step == крок
+    # coef == коефіцієнт дроблення
+
     func = arrFunc[func]
 
     x_plt = np.arange(-30.0, 30.0, 0.1)
@@ -38,24 +41,22 @@ def optimization(func, x, y, eps):
         dfdy = func["dfdy"](x, y)
 
         module = np.sqrt(dfdx ** 2 + dfdy ** 2)
-
-        # print(x, y)
-        # print(dfdx, dfdy)
-
+        
         if module < eps:
             break
+        
+        while True:
+            x_1 = x - step * dfdx
+            y_1 = x - step * dfdy
 
-        steps = []
-        func_values = []
+            if (func["f"](x, y) - func["f"](x_1, y_1)) >= 0.5 * step * (module ** 2):
+                x = x_1
+                y = y_1
+                break
 
-        for i in np.arange(0.01, 10.01, 0.01):
-            steps.append(i)
-            func_values.append(func["f"](x - i * dfdx, y - i * dfdy))
+            step = coef * step
 
-        step = steps[func_values.index(min(func_values))]
-
-        x = x - step * dfdx
-        y = y - step * dfdy
+        print(x, y)
 
         ax.scatter(x, y, func["f"](x, y), c = "red")
 
