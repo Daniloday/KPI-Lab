@@ -55,7 +55,7 @@ def optimization(func, x, y, eps):
         steps = []
         func_values = []
 
-        for i in np.arange(0.50, 2.01, 0.01):
+        for i in np.arange(0.10, 2.01, 0.01):
             steps.append(i)
             func_values.append(func["f"](x + i * h_x, y + i * h_y))
 

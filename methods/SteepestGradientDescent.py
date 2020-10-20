@@ -57,7 +57,7 @@ def optimization(func, x, y, eps):
             func_values.append(func["f"](x - i * dfdx, y - i * dfdy))
 
         step = steps[func_values.index(min(func_values))]
-
+        print("x : ", x, "y : ", y)
         x = x - step * dfdx
         y = y - step * dfdy
 
@@ -67,7 +67,7 @@ def optimization(func, x, y, eps):
         fig.canvas.flush_events()
 
     plt.ioff()
-
     print(x, y)
+    print("kek")
     ax.scatter(x, y, func["f"](x, y), c = "blue")
     plt.show()

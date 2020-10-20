@@ -43,6 +43,7 @@ def optimization(func, x, y, eps, step, coef):
     while True:
         dfdx = func["dfdx"](x, y)
         dfdy = func["dfdy"](x, y)
+        #print("GRAD", x, dfdx)
 
         module = np.sqrt(dfdx ** 2 + dfdy ** 2)
         
@@ -59,6 +60,7 @@ def optimization(func, x, y, eps, step, coef):
                 break
 
             step = coef * step
+            #print(step, func["f"](x, y) - func["f"](x_1, y_1), 0.5 * step * (module ** 2))
 
         print(x, y)
 
@@ -70,5 +72,6 @@ def optimization(func, x, y, eps, step, coef):
     plt.ioff()
 
     print(x, y)
+    print("kek")
     ax.scatter(x, y, func["f"](x, y), c = "blue")
     plt.show()
