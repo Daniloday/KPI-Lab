@@ -7,10 +7,14 @@ from mpl_toolkits.mplot3d import Axes3D
 sys.path.append(os.path.abspath('./functions'))
 
 import Ackley
+import Multimodal
+import Quadratic
 
 arrAckley = {"f": Ackley.f, "dfdx": Ackley.dfdx, "dfdy": Ackley.dfdy}
+arrMultimodal = {"f": Multimodal.f, "dfdx": Multimodal.dfdx, "dfdy": Multimodal.dfdy}
+arrQuadratic = {"f": Quadratic.f, "dfdx": Quadratic.dfdx, "dfdy": Quadratic.dfdy}
 
-arrFunc = {"Ackley": arrAckley}
+arrFunc = {"Ackley": arrAckley, "Quadratic": arrQuadratic, "Multimodal": arrMultimodal}
 
 def optimization(func, x, y, eps):
     func = arrFunc[func]
@@ -51,7 +55,7 @@ def optimization(func, x, y, eps):
         steps = []
         func_values = []
 
-        for i in np.arange(0.001, 1.001, 0.001):
+        for i in np.arange(0.50, 2.01, 0.01):
             steps.append(i)
             func_values.append(func["f"](x + i * h_x, y + i * h_y))
 

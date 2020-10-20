@@ -7,10 +7,14 @@ from mpl_toolkits.mplot3d import Axes3D
 sys.path.append(os.path.abspath('./functions'))
 
 import Ackley
+import Multimodal
+import Quadratic
 
 arrAckley = {"f": Ackley.f, "dfdx": Ackley.dfdx, "dfdy": Ackley.dfdy}
+arrMultimodal = {"f": Multimodal.f, "dfdx": Multimodal.dfdx, "dfdy": Multimodal.dfdy}
+arrQuadratic = {"f": Quadratic.f, "dfdx": Quadratic.dfdx, "dfdy": Quadratic.dfdy}
 
-arrFunc = {"Ackley": arrAckley}
+arrFunc = {"Ackley": arrAckley, "Quadratic": arrQuadratic, "Multimodal": arrMultimodal}
 
 def optimization(func, x, y, eps, step, coef):
     # step == крок
