@@ -12,10 +12,7 @@ arrAckley = {"f": Ackley.f, "dfdx": Ackley.dfdx, "dfdy": Ackley.dfdy}
 
 arrFunc = {"Ackley": arrAckley}
 
-def optimization(func, x, y, eps, step, coef):
-    # step == крок
-    # coef == коефіцієнт дроблення
-
+def optimization(func, x, y, eps):
     func = arrFunc[func]
 
     x_plt = np.arange(-30.0, 30.0, 0.1)
@@ -41,20 +38,27 @@ def optimization(func, x, y, eps, step, coef):
         dfdy = func["dfdy"](x, y)
 
         module = np.sqrt(dfdx ** 2 + dfdy ** 2)
-        
-        if module < eps:
+
+        # print(x, y)
+        # print(dfdx, dfdy)
+
+        if module < eps or np.isnan(dfdx) or np.isnan(dfdy):
             break
-        
-        while True:
-            x_1 = x - step * dfdx
-            y_1 = x - step * dfdy
 
-            if (func["f"](x, y) - func["f"](x_1, y_1)) >= 0.5 * step * (module ** 2):
-                x = x_1
-                y = y_1
-                break
+        h_x = -np.sign(dfdx)
+        h_y = -np.sign(dfdy)
 
-            step = coef * step
+        steps = []
+        func_values = []
+
+        for i in np.arange(0.001, 1.001, 0.001):
+            steps.append(i)
+            func_values.append(func["f"](x + i * h_x, y + i * h_y))
+
+        step = steps[func_values.index(min(func_values))]
+
+        x = x + step * h_x
+        y = y + step * h_y
 
         print(x, y)
 
@@ -66,5 +70,6 @@ def optimization(func, x, y, eps, step, coef):
     plt.ioff()
 
     print(x, y)
+    print("kek")
     ax.scatter(x, y, func["f"](x, y), c = "blue")
     plt.show()

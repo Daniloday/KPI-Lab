@@ -62,7 +62,7 @@ def optimization(func, x, y, eps):
         fig.canvas.draw()
         fig.canvas.flush_events()
 
-    plt.ioff()  # выключение интерактивного режима отображения графиков
+    plt.ioff()
 
     print(x, y)
     ax.scatter(x, y, func["f"](x, y), c = "blue")
