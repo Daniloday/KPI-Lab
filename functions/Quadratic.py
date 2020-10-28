@@ -1,10 +1,13 @@
 import numpy as np
 
+
 def f(x, y):
-    return 10 * (x ** 2 - y) ** 2 + (x - 1) ** 2
+    return 10 * x**2 - 4 * x * y + 7 * y**2 - 4 * np.sqrt(5) * (5 * x + y) - 16
+
 
 def dfdx(x, y):
-    return 2 * (20 * x ** 3 - 20 * x * y + x - 1)
+    return 20 * x - 4 * y - 20 * np.sqrt(5)
+
 
 def dfdy(x, y):
-    return -20 * (x ** 2 - y)
+    return -4 * x + 14 * y - 4 * np.sqrt(5)

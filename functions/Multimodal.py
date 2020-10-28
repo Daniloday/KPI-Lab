@@ -1,10 +1,13 @@
 import numpy as np
 
+
 def f(x, y):
-    return x * np.sin(4 * np.pi * x) - y * np.sin(4 * np.pi * y + np.pi) + 1
+    return x**2 + y**2 - np.cos(18 * x) - np.cos(18 * y)
+
 
 def dfdx(x, y):
-	return np.sin(4 * np.pi * x) + x * np.cos(4 * np.pi * x) * 4 * np.pi
+    return 2 * x + 18 * np.sin(18 * x)
+
 
 def dfdy(x, y):
-	return np.sin(4 * np.pi * y) + y * np.cos(4 * np.pi * y) * 4 * np.pi
+    return 2 * y + 18 * np.sin(18 * y)
