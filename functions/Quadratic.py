@@ -11,3 +11,11 @@ def dfdx(x, y):
 
 def dfdy(x, y):
     return -4 * x + 14 * y - 4 * np.sqrt(5)
+
+
+def dfdxdx(x, y):
+    return 20
+
+
+def dfdydy(x, y):
+    return 14
