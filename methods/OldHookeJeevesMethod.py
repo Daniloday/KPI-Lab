@@ -42,65 +42,6 @@ arrFunc = {
 }
 
 
-def search(func, x, y, h_x, h_y):
-    x_temp = x
-    y_temp = y
-    f = func["f"](x_temp, y_temp)
-    f_x_plus = func["f"](x_temp + h_x, y_temp)
-    f_x_minus = func["f"](x_temp - h_x, y_temp)
-    f_y_plus = func["f"](x_temp, y_temp + h_x)
-    f_y_minus = func["f"](x_temp, y_temp - h_x)
-
-    if f_x_plus < f and f_x_plus <= f_x_minus:
-        x_temp = x_temp + h_x
-    else:
-        if f_x_minus < f and f_x_minus <= f_x_plus:
-            x_temp = x_temp - h_x
-        else:
-            x_temp = x
-    f_x_value = func["f"](x_temp, y)
-
-    if f_y_plus < f and f_y_plus <= f_y_minus:
-        y_temp = y_temp + h_y
-    else:
-        if f_y_minus < f and f_y_minus <= f_y_plus:
-            y_temp = y_temp - h_y
-        else:
-            y_temp = y
-    f_y_value = func["f"](x, y_temp)
-
-    return [x_temp, y_temp, f_x_value, f_y_value]
-
-
-def research(func, x_0, y_0, h_x0, h_y0, eps):
-    x = x_0
-    y = y_0
-    h_x = h_x0
-    h_y = h_y0
-
-    search_result = search(func, x, y, h_x, h_y)
-
-    while True:
-        check = np.sqrt((search_result[0] - x)**2 + (search_result[1] - y)**2)
-
-        if ((search_result[0] != x) or (search_result[1] != y)):
-            if (check < eps):
-                return [
-                    search_result[0], search_result[1],
-                    func["f"](search_result[0],
-                              search_result[1]), h_x, h_y, True
-                ]
-            else:
-                x = x + 0.75 * (search_result[0] - x)
-                y = y + 0.75 * (search_result[1] - y)
-
-                return [x, y, func["f"](x, y), h_x, h_y, False]
-        else:
-            h_x = h_x / 2
-            h_y = h_y / 2
-            search_result = search(func, x, y, h_x, h_y)
-
-
 def optimization(func_0, x_0, y_0, h_x0, h_y0, eps):
     func = arrFunc[func_0]
 
@@ -144,7 +85,7 @@ def optimization(func_0, x_0, y_0, h_x0, h_y0, eps):
     x_list = [x_0]
     y_list = [y_0]
 
-    ax.scatter(x, y, func["f"](x, y), c="red")
+    point = ax.scatter(x, y, func["f"](x, y), c="red")
     ax_heatmap.scatter(x_list, y_list, c="black")
 
     plt.plot(x_list, y_list, c="black")
@@ -152,33 +93,82 @@ def optimization(func_0, x_0, y_0, h_x0, h_y0, eps):
     h_x = h_x0
     h_y = h_y0
 
+    iterations = 0
+
     while True:
-        res = research(func, x, y, h_x, h_y, eps)
+        if (h_x < eps and h_y < eps):
+            break
+        fStart = func["f"](x, y)
 
-        x = res[0]
+        while (h_x > eps):
+            xPlus = func["f"](x + h_x, y)
+            xMinus = func["f"](x - h_x, y)
+            if (xPlus < xMinus):
+                if (xPlus < fStart):
+                    x = x + h_x
+                    print("x = x + h_x worked, x = ", x)
+                    break
+                else:
+                    h_x = 0.5 * h_x
+                    print("h_x decreased, h_x = ", h_x)
+            else:
+                if (xMinus < fStart):
+                    x = x - h_x
+                    print("x = x - h_x worked, x = ", x)
+                    break
+                else:
+                    h_x = 0.5 * h_x
+                    print("h_x decreased 2, h_x = ", h_x)
+
+        fStart = func["f"](x, y)
+
         x_list.append(x)
-
-        y = res[1]
         y_list.append(y)
 
-        h_x = res[3]
-        h_y = res[4]
+        iterations = iterations + 1
 
-        ax.scatter(x, y, res[2], c="black")
+        ax.scatter(x, y, func["f"](x, y), c="black")
         ax_heatmap.scatter(x_list, y_list, c="black")
 
         plt.plot(x_list, y_list, c="black")
 
-        print("X: ", x, "Y: ", y)
+        fig.canvas.draw()
+        fig.canvas.flush_events()
+
+        while (h_y > eps):
+            yPlus = func["f"](x, y + h_y)
+            yMinus = func["f"](x, y - h_y)
+            if (yPlus < yMinus):
+                if (yPlus < fStart):
+                    y = y + h_y
+                    break
+                else:
+                    h_y = 0.5 * h_y
+            else:
+                if (yMinus < fStart):
+                    y = y - h_y
+                    break
+                else:
+                    h_y = 0.5 * h_y
+
+        print("x : ", x, "y : ", y)
+
+        x_list.append(x)
+        y_list.append(y)
+
+        iterations = iterations + 1
+
+        ax.scatter(x, y, func["f"](x, y), c="black")
+        ax_heatmap.scatter(x_list, y_list, c="black")
+
+        plt.plot(x_list, y_list, c="black")
 
         fig.canvas.draw()
         fig.canvas.flush_events()
 
-        if np.sqrt(res[5]) == True:
-            break
-
     plt.ioff()
 
     print("x: ", x, "y: ", y, "f: ", func["f"](x, y))
+    print("iterations count = ", iterations)
     ax.scatter(x, y, func["f"](x, y), c="blue")
     plt.show()
