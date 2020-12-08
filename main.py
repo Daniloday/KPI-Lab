@@ -11,6 +11,7 @@ import ClonAlg as cla
 import NutonMethod as nm
 import HookeJeevesMethod as hjm
 import NelderMeadMethod as nmm
+import GenAlg as ga
 
 
 def main():
@@ -23,6 +24,7 @@ def main():
     # nm.optimization("Ackley", 2.5, -3.1, 0.1)
     # hjm.optimization("Ackley", -4.37, 2.49, 1, 1, 0.01)
     # nmm.optimization("Ackley", x_0, 1, 0.5, 2, 0.1)
+    # ga.optimization("Ackley")
 
     y_0 = [[-4, -4], [3, 2], [5, 1]]
     # sgd.optimization("Quadratic", 0, -np.sqrt(5), 0.3)
@@ -30,7 +32,8 @@ def main():
     # cgm.optimization("Quadratic", 0, -np.sqrt(5), 3, 0.3)
     # nm.optimization("Quadratic", -4, -3, 0.1)
     # hjm.optimization("Quadratic", -4, -4, 1, 1, 0.01)
-    nmm.optimization("Quadratic", y_0, 1, 0.5, 2, 0.1)
+    # nmm.optimization("Quadratic", y_0, 1, 0.5, 2, 0.1)
+    # ga.optimization("Quadratic")
 
     z_0 = [[2.5, 3.7], [5.0, 3.5], [3.5, 4.5]]
     # sgd.optimization("Multimodal", -1, 3, 0.1)
@@ -39,6 +42,7 @@ def main():
     # nm.optimization("Multimodal", 3.5, -2.5, 0.1)
     # hjm.optimization("Multimodal", 1, -3, 0.7, 0.7, 0.001)
     # nmm.optimization("Multimodal", z_0, 1, 0.5, 2, 0.1)
+    ga.optimization("Multimodal")
 
 
 if __name__ == "__main__":
