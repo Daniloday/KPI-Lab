@@ -17,5 +17,13 @@ def dfdxdx(x, y):
     return 20
 
 
+def dfdxdy(x, y):
+    return -4
+
+
+def dfdydx(x, y):
+    return -4
+
+
 def dfdydy(x, y):
     return 14

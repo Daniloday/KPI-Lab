@@ -17,5 +17,13 @@ def dfdxdx(x, y):
     return 2 + 18 * 18 * np.cos(18 * x)
 
 
+def dfdxdy(x, y):
+    return 0
+
+
+def dfdydx(x, y):
+    return 0
+
+
 def dfdydy(x, y):
     return 2 + 18 * 18 * np.cos(18 * y)
