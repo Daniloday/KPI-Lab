@@ -153,6 +153,7 @@ def optimization(func_0, x_0, y_0, h_x0, h_y0, eps):
     h_y = h_y0
 
     while True:
+        print("x: ", x, "y: ", y, "f: ", func["f"](x, y))
         res = research(func, x, y, h_x, h_y, eps)
 
         x = res[0]
@@ -169,8 +170,6 @@ def optimization(func_0, x_0, y_0, h_x0, h_y0, eps):
 
         plt.plot(x_list, y_list, c="black")
 
-        print("X: ", x, "Y: ", y)
-
         fig.canvas.draw()
         fig.canvas.flush_events()
 
@@ -179,6 +178,7 @@ def optimization(func_0, x_0, y_0, h_x0, h_y0, eps):
 
     plt.ioff()
 
+    print("-----final------")
     print("x: ", x, "y: ", y, "f: ", func["f"](x, y))
     ax.scatter(x, y, func["f"](x, y), c="blue")
     plt.show()

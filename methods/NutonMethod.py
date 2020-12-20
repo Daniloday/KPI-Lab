@@ -16,6 +16,8 @@ arrAckley = {
     "dfdx": Ackley.dfdx,
     "dfdy": Ackley.dfdy,
     "dfdxdx": Ackley.dfdxdx,
+    "dfdxdy": Ackley.dfdxdy,
+    "dfdydx": Ackley.dfdydx,
     "dfdydy": Ackley.dfdydy
 }
 
@@ -24,6 +26,8 @@ arrMultimodal = {
     "dfdx": Multimodal.dfdx,
     "dfdy": Multimodal.dfdy,
     "dfdxdx": Multimodal.dfdxdx,
+    "dfdxdy": Multimodal.dfdxdy,
+    "dfdydx": Multimodal.dfdydx,
     "dfdydy": Multimodal.dfdydy
 }
 
@@ -32,6 +36,8 @@ arrQuadratic = {
     "dfdx": Quadratic.dfdx,
     "dfdy": Quadratic.dfdy,
     "dfdxdx": Quadratic.dfdxdx,
+    "dfdxdy": Quadratic.dfdxdy,
+    "dfdydx": Quadratic.dfdydx,
     "dfdydy": Quadratic.dfdydy
 }
 
@@ -90,32 +96,23 @@ def optimization(func_0, x_0, y_0, eps):
 
     plt.plot(x_list, y_list, c="black")
 
-    while True:
-        dfdx = func["dfdx"](x, y)
-        dfdy = func["dfdy"](x, y)
-        dfdxdx = func["dfdxdx"](x, y)
-        dfdydy = func["dfdydy"](x, y)
+    grad_x = func["dfdx"](x, y)
+    grad_y = func["dfdy"](x, y)
 
-        h_x = (-dfdx) / dfdxdx
-        h_y = (-dfdy) / dfdydy
+    while np.linalg.norm([grad_x, grad_y]) > eps:
+        print("x: ", x, "y: ", y, "f: ", func["f"](x, y))
 
-        # print(x, y)
-        # print(dfdx, dfdy)
+        H = np.linalg.inv([[func["dfdxdx"](x, y), func["dfdxdy"](x, y)],
+                           [func["dfdydx"](x, y), func["dfdydy"](x, y)]])
 
-        if func_0 == "Ackley":
-            if np.sqrt(x**2 + y**2) < eps:
-                break
-        if func_0 == "Quadratic":
-            if np.sqrt((2.5 - x)**2 + (1.3 - y)**2) < eps:
-                break
-        if func_0 == "Multimodal":
-            if np.sqrt(x**2 + y**2) < eps:
-                break
+        p_x = H[0][0] * grad_x + H[0][1] * grad_y
+        p_y = H[1][0] * grad_x + H[1][1] * grad_y
 
-        print("x : ", x, "y : ", y)
+        x = x - p_x
+        y = y - p_y
 
-        x = x + h_x
-        y = y + h_y
+        grad_x = func["dfdx"](x, y)
+        grad_y = func["dfdy"](x, y)
 
         x_list.append(x)
         y_list.append(y)
@@ -128,8 +125,47 @@ def optimization(func_0, x_0, y_0, eps):
         fig.canvas.draw()
         fig.canvas.flush_events()
 
+    # while True:
+    #     dfdx = func["dfdx"](x, y)
+    #     dfdy = func["dfdy"](x, y)
+    #     dfdxdx = func["dfdxdx"](x, y)
+    #     dfdydy = func["dfdydy"](x, y)
+
+    #     h_x = (-dfdx) / dfdxdx
+    #     h_y = (-dfdy) / dfdydy
+
+    #     # print(x, y)
+    #     # print(dfdx, dfdy)
+
+    #     # if func_0 == "Ackley":
+    #     #     if np.sqrt(x**2 + y**2) < eps:
+    #     #         break
+    #     # if func_0 == "Quadratic":
+    #     #     if np.sqrt((2.5 - x)**2 + (1.3 - y)**2) < eps:
+    #     #         break
+    #     # if func_0 == "Multimodal":
+    #     #     if np.sqrt(x**2 + y**2) < eps:
+    #     #         break
+
+    #     print("x : ", x, "y : ", y)
+
+    #     x = x + h_x
+    #     y = y + h_y
+
+    #     x_list.append(x)
+    #     y_list.append(y)
+
+    #     ax.scatter(x, y, func["f"](x, y), c="black")
+    #     ax_heatmap.scatter(x_list, y_list, c="black")
+
+    #     plt.plot(x_list, y_list, c="black")
+
+    #     fig.canvas.draw()
+    #     fig.canvas.flush_events()
+
     plt.ioff()
 
+    print("-----final------")
     print("x: ", x, "y: ", y, "f: ", func["f"](x, y))
     ax.scatter(x, y, func["f"](x, y), c="blue")
     plt.show()

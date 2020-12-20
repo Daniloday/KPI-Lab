@@ -94,17 +94,18 @@ def optimization(func_0, x_0, alpha, beta, gamma, epsilon):
         x_list.append(x[0])
         y_list.append(x[1])
 
-    paths = ax_heatmap.scatter(x_list, y_list, c="black")
-    lines = plt.plot(x_list, y_list, c="black")
+    x_plot = x_list + [x_list[0]]
+    y_plot = y_list + [y_list[0]]
+
+    plt.plot(x_plot, y_plot)
+
+    # paths = ax_heatmap.scatter(x_list, y_list, c="black")
+    # lines = plt.plot(x_list, y_list, c="black")
 
     iterations = 0
 
     while True:
-        # for i in range(0, len(x_list)):
-        #     x_temp = x_list[i]
-        #     y_temp = y_list[i]
-
-        #     paths.append([x_temp, y_temp])
+        print("x: ", x_list, "y: ", y_list)
 
         func_values = []
 
@@ -208,22 +209,25 @@ def optimization(func_0, x_0, alpha, beta, gamma, epsilon):
 
         ax.scatter(x_list, y_list, c="black")
 
-        paths.set_visible(False)
-        line = lines.pop(0)
-        line.remove()
+        # paths.set_visible(False)
+        # line = lines.pop(0)
+        # line.remove()
 
-        paths = ax_heatmap.scatter(x_list, y_list, c="black")
+        # paths = ax_heatmap.scatter(x_list, y_list, c="black")
 
-        lines = plt.plot(x_list, y_list, c="black")
+        x_plot = x_list + [x_list[0]]
+        y_plot = y_list + [y_list[0]]
 
-        print("x: ", x_list, "y: ", y_list, "sigma: ", sigma)
+        plt.plot(x_plot, y_plot)
+
+        # lines = plt.plot(x_list, y_list, c="black")
 
         fig.canvas.draw()
         fig.canvas.flush_events()
 
     plt.ioff()
 
-    print("x: ", x, "y: ", y, "f: ", func["f"](x, y))
-    print("iterations count = ", iterations)
+    print("-----final------")
+    print("x: ", x_list, "y: ", y_list, "f: ")
     ax.scatter(x, y, func["f"](x, y), c="blue")
     plt.show()

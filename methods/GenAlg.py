@@ -119,7 +119,7 @@ def genetic(func, quan, leng, dim, area, gen, t, prob, xdot):
     fit = [fitness(convert(i, area), func) for i in population]
     # print(fit)
     ans = population[fit.index(min(fit))]
-    print(fitness(convert(ans, area), func))
+    print("Function minimum: ", fitness(convert(ans, area), func))
     return convert(ans, area)
 
 
@@ -143,6 +143,6 @@ def optimization(func_0):
 
     # axes.plot_surface(X, Y, Z, color='c', alpha=0.3)
     ox, oy = np.meshgrid(x_plt, y_plt)
-    ax.plot_surface(ox, oy, f_plt, rstride=1, color='c', alpha=0.7)
-    ax.scatter(xdot[0], xdot[1], xdot[2], c='b', s=20)
+    ax.plot_surface(ox, oy, f_plt, rstride=1, color='c', alpha=0.2)
+    ax.scatter(xdot[0], xdot[1], xdot[2], c='r', s=20)
     pylab.show()
