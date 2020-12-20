@@ -6,15 +6,23 @@ import random as rd
 
 
 def F1(X):  # Первая целевая функция
-    return X[0] + 2 * X[1] ** 2 + np.exp(X[0] ** 2 + X[1] ** 2)
+    x = X[0]
+    y = X[1]
+    return (-20 * np.e ** (-0.2 * np.sqrt(0.5 * (x ** 2 + y ** 2))) -
+            np.e ** (0.5 * (np.cos(2 * np.pi * x) + np.cos(2 * np.pi * y))) +
+            np.e + 20)
 
 
 def F2(X):  # Вторая целевая функция
-    return 100 * (X[1] - X[0] ** 2) ** 2 + (X[0] - 1) ** 2
+    x = X[0]
+    y = X[1]
+    return x**2 + y**2 - np.cos(18 * x) - np.cos(18 * y)
 
 
 def F3(X):  # Третья целевая функция (ненужная, но вот да)
-    return X[0] * np.sin(4 * np.pi * X[0]) - X[1] * np.sin(4 * np.pi * X[1] + np.pi) + 1
+    x = X[0]
+    y = X[1]
+    return 10 * x**2 - 4 * x * y + 7 * y**2 - 4 * np.sqrt(5) * (5 * x + y) - 16
 
 
 def grad(F, X, Eps):  # Градиент для оптимизационных функцй
@@ -174,6 +182,25 @@ def ExternalFines(Function, EqualCondition, InequalCondition, StartPoint):
         plt.plot(Iterations[:, 0], Iterations[:, 1], color='red')  # график итераций
         plt.show()
         print(Iterations)
+    def f_plot(function, diapason):
+            fig = plt.figure(figsize=(6,6))
+            qf = fig.gca(projection='3d')
+            size = 50
+            x1 = list(np.linspace(-diapason, diapason, size))
+            x2 = list(np.linspace(-diapason, diapason, size))
+            x1, x2 = np.meshgrid(x1, x2)
+            x3 = np.zeros((size, size))
+            for i in range(size):
+                for j in range(size):
+                    x3[i,j] = function((x1[i,j],x2[i,j]))
+            qf.plot_surface(x1, x2, x3, rstride=1, cstride=1, cmap='Spectral', linewidth=0)
+            return x1, x2, x3
+
+    def F1_for_plot():
+            return lambda X: (-20 * np.e ** (-0.2 * np.sqrt(0.5 * (X[0] ** 2 + X[1] ** 2))) -
+            np.e ** (0.5 * (np.cos(2 * np.pi * X[0]) + np.cos(2 * np.pi * X[1]))) +
+            np.e + 20) 
+    x1, x2, x3 = f_plot(F1_for_plot(), 1)
 
 
 # Внутренние штрафы
@@ -195,10 +222,31 @@ def InternalFines(Function, EqualCondition, InequalCondition, StartPoint):
         plt.show()
         print(Iterations)
 
+        def f_plot(function, diapason):
+            fig = plt.figure(figsize=(6,6))
+            qf = fig.gca(projection='3d')
+            size = 50
+            x1 = list(np.linspace(-diapason, diapason, size))
+            x2 = list(np.linspace(-diapason, diapason, size))
+            x1, x2 = np.meshgrid(x1, x2)
+            x3 = np.zeros((size, size))
+            for i in range(size):
+                for j in range(size):
+                    x3[i,j] = function((x1[i,j],x2[i,j]))
+            qf.plot_surface(x1, x2, x3, rstride=1, cstride=1, cmap='Spectral', linewidth=0)
+            return x1, x2, x3
+
+        def F1_for_plot():
+            return lambda X: (-20 * np.e ** (-0.2 * np.sqrt(0.5 * (X[0] ** 2 + X[1] ** 2))) -
+            np.e ** (0.5 * (np.cos(2 * np.pi * X[0]) + np.cos(2 * np.pi * X[1]))) +
+            np.e + 20) 
+        x1, x2, x3 = f_plot(F1_for_plot(), 1)
+
 
 # Ограничения для внешних штрафов. Всё происходит в кругу, в котором не находятся оптимальные
 # точки всех функций, потому ответ будет лежать на границе области. Потому нет необходимости
 # добавлять ограничения-равенства, но при желании можно
+
 
 def ExternalEqualCondition(X):
     return 0
