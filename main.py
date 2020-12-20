@@ -11,7 +11,7 @@ import ClonAlg as cla
 import NutonMethod as nm
 import HookeJeevesMethod as hjm
 import NelderMeadMethod as nmm
-
+import GenAlg as ga
 
 def main():
     x_0 = [[-4.3, -3.9], [3.1, 4.7], [6.3, -0.7]]
@@ -38,7 +38,9 @@ def main():
     # cla.optimization("Multimodal", 0.0)
     # nm.optimization("Multimodal", 3.5, -2.5, 0.1)
     # hjm.optimization("Multimodal", 1, -3, 0.7, 0.7, 0.001)
-    nmm.optimization("Multimodal", z_0, 1, 0.5, 2, 0.1)
+    # nmm.optimization("Multimodal", z_0, 1, 0.5, 2, 0.1)
+    # nmm.optimization("Multimodal", z_0, 1, 0.5, 2, 0.1)
+    ga.optimization()
 
 
 if __name__ == "__main__":
